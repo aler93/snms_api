@@ -1,0 +1,32 @@
+version: "3.8"
+
+networks:
+  snms-net:
+
+volumes:
+  snms-volume:
+
+services:
+  sportninja_db:
+    image: mariadb:focal
+    container_name: snms_db
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - snms-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secretpswd
+      MYSQL_DATABASE: stats
+    networks:
+      - snms-net
+  sportninja_redis:
+    image: redis:latest
+    container_name: snms_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    #environment:
+      #REDIS_PASSWORD: "secretpswd"
+    networks:
+      - snms-net
